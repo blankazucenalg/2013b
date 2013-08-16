@@ -23,12 +23,12 @@ class Practica1(object):
             else:
                 if(cadena[middle + 1] >= cadena[middle]):  # Se compara el lado derecho
                     print cadena[middle + 1], ">=", cadena[middle]
-                    cadenaAux = cadena[middle + 1:]
+                    cadenaAux = cadena[middle:]
                     self.findPeak(len(cadenaAux) / 2, cadenaAux)
                     return
                 else:
                     print cadena[middle + 1], "<=", cadena[middle]
-                    cadenaAux = cadena[:middle - 1]
+                    cadenaAux = cadena[:middle]
                     self.findPeak(len(cadenaAux) / 2, cadenaAux)
                     return
         except Exception as exception:
