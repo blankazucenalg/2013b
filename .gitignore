@@ -1,0 +1,18 @@
+#Package files#
+*.jar
+*.ear
+*.war
+
+#Compiled classes#
+*.class
+*.pyc
+*.out
+*.exe
+
+#the log files just will be commited if necessary#
+*.log
+
+#Configuration Files#
+*.conf
+*.dat
+*.cfg
