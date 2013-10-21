@@ -16,3 +16,9 @@
 *.conf
 *.dat
 *.cfg
+
+#IDE's conf files#
+
+*.project
+*.idea
+nbproject/
