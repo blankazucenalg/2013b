@@ -18,20 +18,20 @@ class Node
         @neighbors = {}
         @f = INFINITE
     showInfo: ->
-        console.log("#{@nodeName} >> #{@d} >> #{@color}")
+        return "Name: #{@nodeName} >> D: #{@d} >> COLOR: #{@color}"
     getColor: ->
-        if @color is WHITE
+        if @color == WHITE
             return "WHITE"
-        else if @color is GRAY
+        else if @color == GRAY
             return "GRAY"
-        else if @color is BLACK
+        else if @color == BLACK
             return "NEGRO"
         else
             return "NO COLOR"
     getNeighborsValues: ->
         return @neighbors.values()
     getNeighbors: ->
-        return @neighbors
+        return Object.keys(@neighbors)
     addNeighbor: (neighborName,cost)->        
         @neighbors[neighborName] = cost
 
@@ -45,7 +45,7 @@ class Graph
         return "#{@graphName} >> #{@numberOfNodes}"
     printNodes:() ->
         for node in @nodes
-            node.showInfo()
+            console.log(node.showInfo())
     addNode: (nodeName) ->
         n  = new Node(nodeName)        
         @nodes[nodeName] = n
@@ -71,44 +71,41 @@ class Graph
         u.d = @tiempo
         for nv in u.getNeighbors()
             v = @getNode(nv)
-            if v.color is WHITE
-                v.pi = u.name
+            if v.color == WHITE
+                v.pi = u.nodeName
                 @bp_visit(v)        
         u.color = BLACK
         @tiempo += 1
         u.f = @tiempo
     busquedaAmplitud:(nameOriginNode) ->        
         for nn in @getKeysOfNodes()
-            if nn.nodeName is not nameOriginNode
+            if nn != nameOriginNode
                 n = @getNode(nn)
                 n.color = WHITE
                 n.d = INFINITE
-                n.pi = null
-                console.log(">>>>>>>>>>>")
-                n.showInfo()
-        s = @getNode(nameOriginNode)
-        s.showInfo()
+                n.pi = null                
+        s = @getNode(nameOriginNode)        
         s.color = GRAY
         s.d = 0
         s.pi = NO_PREDECESSOR
         Q = []        
         Q.push(s)        
-        while Q.length is not 0
+        while Q.length != 0
             z = Q.shift()            
             for nv in z.getNeighbors()
                 v = @getNode(nv)
                 if v.color is WHITE
                     v.color = GRAY
                     v.d = z.d + 1
-                    v.pi = z.name
+                    v.pi = z.nodeName
                     Q.push(v)
             z.color = BLACK 
     ruta:(nameDestinyNode, list)->
-        if list is null
+        if list == null
             list = []
         list.push(nameDestinyNode)
         nd = @getNode(nameDestinyNode)
-        if nd.pi is not null
+        if nd.pi isnt null and typeof nd.pi isnt "undefined" and "#{nd.pi}".length> 0
             return @ruta(nd.pi, list)
         return list
 ###
@@ -130,11 +127,9 @@ start = () ->
     g.addNode("w")
     g.addNode("x")
     g.addNode("y")
-
-    g.showInfo()
-
+    #g.showInfo()
+    console.log("LLAVES")
     console.log(g.getKeysOfNodes())
-
     r = g.getNode("r")
     r.addNeighbor("s", 1)
     r.addNeighbor("v", 1)
@@ -171,7 +166,7 @@ start = () ->
     y.addNeighbor("u", 1)
     y.addNeighbor("x", 1)
 
-
+    console.warn("---- VECINOS ----")
     console.log(r.getNeighbors())
     console.log(s.getNeighbors())
     console.log(t.getNeighbors())
@@ -180,17 +175,16 @@ start = () ->
     console.log(w.getNeighbors())
     console.log(x.getNeighbors())
     console.log(y.getNeighbors())
-
-    #g.printNodes()
-
-    g.busquedaAmplitud("s")
-
+    console.warn("----printNodes----")
     g.printNodes()
-
+    console.warn("-----BUSQUEDA AMPLITUD---")
+    g.busquedaAmplitud("s")
+    console.warn("----printNodes----")    
+    g.printNodes()
+    console.warn("----RUTA ----")
     ruta = g.ruta("y", null)
-
-    console.log(ruta)
-
+    for elemento in ruta
+        console.log("RUTA : Y  > "+elemento)
+    console.warn("--------")
     ruta2 = g.ruta("v", null)
-
-    console.log(ruta2)
+    console.log("RUTA : V  > "+ruta2)

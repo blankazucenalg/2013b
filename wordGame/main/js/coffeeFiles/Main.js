@@ -34,7 +34,7 @@ Analisis de Algoritmos
     }
 
     Node.prototype.showInfo = function() {
-      return console.log("" + this.nodeName + " >> " + this.d + " >> " + this.color);
+      return "Name: " + this.nodeName + " >> D: " + this.d + " >> COLOR: " + this.color;
     };
 
     Node.prototype.getColor = function() {
@@ -54,7 +54,7 @@ Analisis de Algoritmos
     };
 
     Node.prototype.getNeighbors = function() {
-      return this.neighbors;
+      return Object.keys(this.neighbors);
     };
 
     Node.prototype.addNeighbor = function(neighborName, cost) {
@@ -83,7 +83,7 @@ Analisis de Algoritmos
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         node = _ref[_i];
-        _results.push(node.showInfo());
+        _results.push(console.log(node.showInfo()));
       }
       return _results;
     };
@@ -131,7 +131,7 @@ Analisis de Algoritmos
         nv = _ref[_i];
         v = this.getNode(nv);
         if (v.color === WHITE) {
-          v.pi = u.name;
+          v.pi = u.nodeName;
           this.bp_visit(v);
         }
       }
@@ -145,24 +145,21 @@ Analisis de Algoritmos
       _ref = this.getKeysOfNodes();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         nn = _ref[_i];
-        if (nn.nodeName === !nameOriginNode) {
+        if (nn !== nameOriginNode) {
           n = this.getNode(nn);
           n.color = WHITE;
           n.d = INFINITE;
           n.pi = null;
-          console.log(">>>>>>>>>>>");
-          n.showInfo();
         }
       }
       s = this.getNode(nameOriginNode);
-      s.showInfo();
       s.color = GRAY;
       s.d = 0;
       s.pi = NO_PREDECESSOR;
       Q = [];
       Q.push(s);
       _results = [];
-      while (Q.length === !0) {
+      while (Q.length !== 0) {
         z = Q.shift();
         _ref1 = z.getNeighbors();
         for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
@@ -171,7 +168,7 @@ Analisis de Algoritmos
           if (v.color === WHITE) {
             v.color = GRAY;
             v.d = z.d + 1;
-            v.pi = z.name;
+            v.pi = z.nodeName;
             Q.push(v);
           }
         }
@@ -187,7 +184,7 @@ Analisis de Algoritmos
       }
       list.push(nameDestinyNode);
       nd = this.getNode(nameDestinyNode);
-      if (nd.pi === !null) {
+      if (nd.pi !== null && typeof nd.pi !== "undefined" && ("" + nd.pi).length > 0) {
         return this.ruta(nd.pi, list);
       }
       return list;
@@ -209,7 +206,7 @@ Analisis de Algoritmos
   });
 
   start = function() {
-    var g, r, ruta, ruta2, s, t, u, v, w, x, y;
+    var elemento, g, r, ruta, ruta2, s, t, u, v, w, x, y, _i, _len;
     g = new Graph("Mi grafo 1");
     g.addNode("r");
     g.addNode("s");
@@ -219,7 +216,7 @@ Analisis de Algoritmos
     g.addNode("w");
     g.addNode("x");
     g.addNode("y");
-    g.showInfo();
+    console.log("LLAVES");
     console.log(g.getKeysOfNodes());
     r = g.getNode("r");
     r.addNeighbor("s", 1);
@@ -249,6 +246,7 @@ Analisis de Algoritmos
     y = g.getNode("y");
     y.addNeighbor("u", 1);
     y.addNeighbor("x", 1);
+    console.warn("---- VECINOS ----");
     console.log(r.getNeighbors());
     console.log(s.getNeighbors());
     console.log(t.getNeighbors());
@@ -257,12 +255,21 @@ Analisis de Algoritmos
     console.log(w.getNeighbors());
     console.log(x.getNeighbors());
     console.log(y.getNeighbors());
-    g.busquedaAmplitud("s");
+    console.warn("----printNodes----");
     g.printNodes();
+    console.warn("-----BUSQUEDA AMPLITUD---");
+    g.busquedaAmplitud("s");
+    console.warn("----printNodes----");
+    g.printNodes();
+    console.warn("----RUTA ----");
     ruta = g.ruta("y", null);
-    console.log(ruta);
+    for (_i = 0, _len = ruta.length; _i < _len; _i++) {
+      elemento = ruta[_i];
+      console.log("RUTA : Y  > " + elemento);
+    }
+    console.warn("--------");
     ruta2 = g.ruta("v", null);
-    return console.log(ruta2);
+    return console.log("RUTA : V  > " + ruta2);
   };
 
 }).call(this);
