@@ -3,6 +3,7 @@ Lopez Garduño Blanca Azucena
 Resendiz Arteaga Juan Alberto
 Analisis de Algoritmos
 ###
+
 INFINITE = -1
 NO_COLOR = 0
 WHITE = 1
