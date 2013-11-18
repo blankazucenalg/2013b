@@ -27,7 +27,7 @@ class Grafo {
         return this.nodos
     }
     def obtenerNombresNodos(){
-        return this.nodos.getProperties()
+        return this.nodos.keySet() as String[]
     }
     Nodo obtenerNodo(String nombreNodo){
         return this.nodos[nombreNodo]

@@ -36,7 +36,8 @@ grails.mime.types = [
 
 // What URL patterns should be processed by the resources plugin
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
-
+grails.diccionario1 = './archivos/englishWords.txt'//diccionario de 4 letras
+grails.diccionario2 = './archivos/englishWords2.txt' //diccionario de 5 letras
 // Legacy setting for codec used to encode data with ${}
 grails.views.default.codec = "html"
 
