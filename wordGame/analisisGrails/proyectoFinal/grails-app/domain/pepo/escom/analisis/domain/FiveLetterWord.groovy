@@ -9,6 +9,7 @@ class FiveLetterWord {
     }
     static mapping = {
         version false
+        table 'five_letter_word'
         id(name:'idWord',column:'idWord')
         word(column:'word')
     }

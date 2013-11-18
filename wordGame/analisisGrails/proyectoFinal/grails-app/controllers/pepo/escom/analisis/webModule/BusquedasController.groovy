@@ -13,15 +13,15 @@ class BusquedasController {
         def dictionary2 = new File(servletContext.getRealPath('archivos/englishWords2.txt'))
         FourLetterWord four = null
         dictionary1.eachLine{ line ->
-            four = new FourLetterWord()
-            four.word = line
-            four.save()
+        four = new FourLetterWord()
+        four.word = line
+        four.save()
         }
         FiveLetterWord five = null
         dictionary2.eachLine{ line ->
-            five = new FiveLetterWord()
-            five.word = line
-            five.save()
+        five = new FiveLetterWord()
+        five.word = line
+        five.save()
         }
         render("OK")
         //render([lista: FourLetterWord.list()] as JSON)
@@ -84,6 +84,22 @@ class BusquedasController {
         Nodo n = new Nodo("Hola Primer Nodo")
         println(session.mapa);
         render([properties :n.getProperties(),objetoCompleto:n] as JSON)
+    }
+    def cargaRegistros(){
+        def dictionary1 = new File(servletContext.getRealPath('archivos/englishWords.txt'))
+        def dictionary2 = new File(servletContext.getRealPath('archivos/englishWords2.txt'))
+        FourLetterWord four = null
+        dictionary1.eachLine{ line ->
+            four = new FourLetterWord()
+            four.word = line
+            four.save()
+        }
+        FiveLetterWord five = null
+        dictionary2.eachLine{ line ->
+            five = new FiveLetterWord()
+            five.word = line
+            five.save()
+        }
     }
     def busquedaPorProfunidad(){
         render([mensaje:"ok"] as JSON)

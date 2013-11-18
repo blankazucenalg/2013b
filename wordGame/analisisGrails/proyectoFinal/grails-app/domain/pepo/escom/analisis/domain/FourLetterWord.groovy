@@ -9,6 +9,7 @@ class FourLetterWord {
     }
     static mapping = {
         version false
+        table 'four_letter_word'
         id(name:'idWord',column:'idWord')
         word(column:'word')
     }
