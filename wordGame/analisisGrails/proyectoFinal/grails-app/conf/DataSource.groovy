@@ -4,13 +4,15 @@ dataSource {
     driverClassName = "com.mysql.jdbc.Driver"
     //username = "sa"
     //password = ""
-    show_sql=true
-    format_sql=true
+    //show_sql=true
+    //format_sql=true
 }
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = false
     cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory' // Hibernate 3
+    //show_sql=true
+    //format_sql=true
     //    cache.region.factory_class = 'org.hibernate.cache.ehcache.EhCacheRegionFactory' // Hibernate 4
 }
 
@@ -23,8 +25,8 @@ environments {
             url = "jdbc:mysql://127.0.0.1:3306/analisisFinal"
             username="root"
             password="n0m3l0s3"
-            show_sql=true
-            format_sql=true
+            //show_sql=true
+            //format_sql=true
         }
     }
     test {

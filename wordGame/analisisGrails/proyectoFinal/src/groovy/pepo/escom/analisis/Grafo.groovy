@@ -1,6 +1,6 @@
 package pepo.escom.analisis
 import pepo.escom.analisis.*
-    
+import grails.converters.JSON    
 /**
  *
  * @author alberto
@@ -8,7 +8,7 @@ import pepo.escom.analisis.*
 class Grafo {
     String nombre
     Integer numeroNodos
-    def nodos
+    def nodos       
     def tiempo
     Grafo(String nombreNodo){
         this.nombre = nombreNodo
@@ -60,37 +60,39 @@ class Grafo {
     }
     def busquedaAmplitud(String nombreNodoOrigen){
         for(nn in this.obtenerNombresNodos()){
-            if(nn != nombreNodoOrigen){
+            if(!nn.equals(nombreNodoOrigen)){
                 Nodo n = this.obtenerNodo(nn)
                 n.color = Utils.BLANCO()
                 n.d = Utils.INFINITO()
                 n.pi = null
             }
         }
-        s = this.obtenerNodo(nombreNodoOrigen)
+        def s = this.obtenerNodo(nombreNodoOrigen)
         s.color = Utils.GRIS()
         s.d = 0
         s.pi = Utils.SIN_ANTECESOR()
         def q = [] as Queue
-        q.add(s)
+        q.offer(s)
         while(q.size()>0){
-            z = q.poll()
+            def z = q.poll()
             for(nv in z.obtenerVecinos()){
-                v = this.obtenerNodo(nv)
+                def v = this.obtenerNodo(nv)
                 if(v.color == Utils.BLANCO()){
                     v.color = Utils.GRIS()
                     v.d = z.d + 1
                     v.pi = z.nombre
-                    Q.add(v)
+                    q.offer(v)
                 }
+                //println("Q --> " + q)
             }
             z.color = Utils.NEGRO()
         }
         
     }
     def imprimirNodos(){
-        for(n in this.nodos.getProperties){
-            println n
+        for(n in (this.nodos.keySet() as String [])){
+            if(this.nodos[n]?.color == Utils.NEGRO())
+                println this.nodos[n]
         }
     }
     def ruta(String nombreNodoDestino, def lista){
@@ -98,8 +100,9 @@ class Grafo {
             lista = [] as Queue
         }
         lista.add(nombreNodoDestino)
-        nd = this.obtenerNodo(nombreNodoDestino)
-        if(nd.pi != null || nd.pi != ""){
+        def nd = this.obtenerNodo(nombreNodoDestino)
+        //println(nd.getProperties())
+        if(nd?.pi){
             return this.ruta(nd.pi,lista)
         }
         return lista
