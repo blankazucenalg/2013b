@@ -8,64 +8,71 @@ import pepo.escom.analisis.domain.*
 class BusquedasController {
 
     def index() {
-        //render([lista:FourLetterWord.list()])
-        /*try{
-            Grafo g = new Grafo("Lista4Letras")
-            for(elemento in FourLetterWord.list()){
-                g.agregarNodo(elemento.word)
+        Grafo g = new Grafo("Test")
+        for(elemento in FourLetterWord.list()){
+            String variable = elemento.word
+            g.agregarNodo(variable)
+            Nodo nodo =  g.obtenerNodo(variable)
+            def listaVecinos = FourLetterWord.findAllByWordLikeOrWordLikeOrWordLikeOrWordLike(
+                        "%${variable[1]+variable[2]+variable[3]}",
+                        "${variable[0]}"+"%"+"${variable[2]+variable[3]}",
+                        "${variable[0]+variable[1]}"+"%"+"${variable[3]}",
+                        "${variable[0]+variable[1]+variable[2]}"+"%"
+            )
+            //    println(listaVecinos.size())
+            listaVecinos.each{
+                nodo.agregarVecino(it.word,1)
             }
-            for(nodo_0 in g.obtenerNombresNodos()){
-                Nodo parcial_0 = g.obtenerNodo(nodo_0)
-                def listaPalabras_0 = FourLetterWord.findAllByWordLike(parcial_0.nombre.substring(0,0));
-                listaPalabras_0.each{
-                    parcial_0.agregarVecino(it.word,1)
-                }
-                for(nodo_1 in parcial_0.obtenerVecinos()){
-                    Nodo parcial_1 = g.obtenerNodo(nodo_1)
-                    def listaPalabras_1 = FourLetterWord.findAllByWordLike(parcial_1.nombre.substring(0,1));
-                    listaPalabras_1.each{
-                        parcial1.agregarVecino(it.word,1)
-                    }
-                    for(nodo_2 in parcial_1.obtenerVecinos()){
-                        Nodo parcial_2 = g.obtenerNodo(nodo_2)
-                        def nombreNodoCortado2 = parcial2.nombre.substring(0,2)
-                        def listaPalabras_2 = FourLetterWord.findAllByWordLike(parcial_2.nombre.substring(0,2));
-                        listaPalabras_2.each{
-                            parcial2.agregarVecino(it,1)
-                        }
-                    }
-                }
-            }
-            render(g.obtenerNodo("tell") as JSON)
-        }catch(Exception e){
-            e.printStackTrace()
-            render("Error >> "+e)
-            
-        }*/
+        }
+        session.grafo = g
+        render("Grafo cargado en memoria!!!!!")
     }
     def busquedaPorAmplitud(){
-        Nodo n = new Nodo("Hola Primer Nodo")
-        println(session.mapa);
-        render([properties :n.getProperties(),objetoCompleto:n] as JSON)
+        session.grafo.busquedaAmplitud(params.inicio)
+        def ruta = session.grafo.ruta(params.destino,null)
+        render([ruta:ruta] as JSON)
     }
     def cargaRegistros(){
         def dictionary1 = new File(servletContext.getRealPath('archivos/englishWords.txt'))
         def dictionary2 = new File(servletContext.getRealPath('archivos/englishWords2.txt'))
         FourLetterWord four = null
+        def list = []
         dictionary1.eachLine{ line ->
-            four = new FourLetterWord()
-            four.word = line
-            four.save()
+            list.add(line.toLowerCase())
         }
+        println("Four line : >>>"+list.unique().size())
+        /*for(elemento in list.unique()){
+        try{
+        four = new FourLetterWord()
+        four.word = elemento
+        four.save()
+        }catch(Exception e){
+        println("Error >> X__X" + e)
+        }
+        }*/
+        list = []
+        println("lista Vacia " + list.size())
         FiveLetterWord five = null
         dictionary2.eachLine{ line ->
-            five = new FiveLetterWord()
-            five.word = line
-            five.save()
+            list.add(line.toLowerCase())
         }
+        println("Five line : >>>"+list.unique().size())
+        /*for(elemento in list.unique()){
+        try{
+        five = new FiveLetterWord()
+        five.word = elemento
+        five.save()
+        }catch(Exception e){
+        println("Error >> X__X" + e)
+        }
+        }*/
+        render("OK")
     }
-    def busquedaPorProfunidad(){
-        render([mensaje:"ok"] as JSON)
+    def busquedaPorProfundidad(){
+        session.grafo.busquedaProfunidad(params.inicio)
+        def ruta = session.grafo.ruta(params.destino,null)
+        println(ruta.size())
+        render([ruta:ruta] as JSON)
     }
     def busquedaAEstrella(){
         render([mensaje:"ok"] as JSON)
