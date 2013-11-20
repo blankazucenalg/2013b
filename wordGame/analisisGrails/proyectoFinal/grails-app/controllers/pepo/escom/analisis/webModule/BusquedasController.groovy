@@ -28,6 +28,7 @@ class BusquedasController {
         render("Grafo cargado en memoria!!!!!")
     }
     def busquedaPorAmplitud(){
+        println(params)
         session.grafo.busquedaAmplitud(params.inicio)
         def ruta = session.grafo.ruta(params.destino,null)
         render([ruta:ruta] as JSON)
@@ -69,6 +70,7 @@ class BusquedasController {
         render("OK")
     }
     def busquedaPorProfundidad(){
+        println(params)
         session.grafo.busquedaProfunidad(params.inicio)
         def ruta = session.grafo.ruta(params.destino,null)
         println(ruta.size())

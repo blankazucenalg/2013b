@@ -1,11 +1,48 @@
-<!DOCTYPE>
-<html>
-	<head>
-		<title>Coffe Sample</title>
-		<script type="text/javascript" src="js/coffeeFiles/jquery1-10-1.js"></script>		
-		<script type="text/javascript" src="js/coffeeFiles/Main.js"></script>		
-	</head>
-	<body>
-		<button id="start">Picar!</button>		
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Nodos</title>
+  <script src="../_/jquery-1.6.1.min.js"></script>
+  <!--<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>-->
+  <script src="../../lib/arbor.js"></script>
+  <script src="../_/graphics.js"></script>
+  <script src="../_/renderer.js"></script>
+</head>
+<body>
+  <div id="content">
+      <table>
+        <tr>
+          <td>Origen</td>
+          <td><input type="text" name="origen" id="origen" maxlenght="4"></td>
+          <td>Destino</td>
+          <td><input type="text" name="origen" id="origen" maxlenght="4"></td>
+          <td><input type="button" id="obtenerSolucion" value="Buscar Solucion"></td>
+        </tr>
+      </table>
+  </div>
+  <div id="maps"><a href="/">back</a><ul></ul></div>
+  <canvas id="viewport" width="800" height="600"></canvas>
+  <script type="text/javascript">
+      console.log("Antes de la petición ajax");
+      var sys = arbor.ParticleSystem(1000,1000,10);
+      sys.parameters({gravity:false});
+      sys.renderer = Renderer("#viewport");
+      var animals = sys.addNode('case',{'color':'red','shape':'dot','label':'case'});
+      var dog = sys.addNode('otro',{'color':'blue','shape':'dot','label':'otro'});
+      var dog2 = sys.addNode('otro2',{'color':'blue','shape':'dot','label':'otro2'});
+      sys.addEdge(animals,dog);
+      sys.addEdge(dog,dog2);
+      sys.addEdge(animals,dog2);
+      $.ajax({
+        type: "POST",
+        contenType:"JSON",
+        url: "http://localhost:8080/proyectoFinal/busquedas/busquedaPorAmplitud/",
+        data: { inicio: "case", destino: "cake" }
+      }).done(function( msg ) {
+        console.log(msg);
+      });
+  </script>
+</body>
 </html>

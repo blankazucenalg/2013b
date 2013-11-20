@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
-		<title>Welcome to Grails</title>
+		<title>Analisis de Algoritmos :  Juego de las palabras : 3CV1 : ESCOM </title> 
 		<style type="text/css" media="screen">
 			#status {
 				background-color: #eee;
@@ -81,42 +81,76 @@
 		</style>
 	</head>
 	<body>
-		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="status" role="complementary">
-			<h1>Application Status</h1>
-			<ul>
-				<li>App version: <g:meta name="app.version"/></li>
-				<li>Grails version: <g:meta name="app.grails.version"/></li>
-				<li>Groovy version: ${GroovySystem.getVersion()}</li>
-				<li>JVM version: ${System.getProperty('java.version')}</li>
-				<li>Reloading active: ${grails.util.Environment.reloadingAgentEnabled}</li>
-				<li>Controllers: ${grailsApplication.controllerClasses.size()}</li>
-				<li>Domains: ${grailsApplication.domainClasses.size()}</li>
-				<li>Services: ${grailsApplication.serviceClasses.size()}</li>
-				<li>Tag Libraries: ${grailsApplication.tagLibClasses.size()}</li>
-			</ul>
-			<h1>Installed Plugins</h1>
-			<ul>
-				<g:each var="plugin" in="${applicationContext.getBean('pluginManager').allPlugins}">
-					<li>${plugin.name} - ${plugin.version}</li>
-				</g:each>
-			</ul>
-		</div>
-		<div id="page-body" role="main">
-			<h1>Welcome to Grails</h1>
-			<p>Congratulations, you have successfully started your first Grails application! At the moment
-			   this is the default page, feel free to modify it to either redirect to a controller or display whatever
-			   content you may choose. Below is a list of controllers that are currently deployed in this application,
-			   click on each to execute its default action:</p>
-
-			<div id="controller-list" role="navigation">
-				<h2>Available Controllers:</h2>
-				<ul>
-					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
-					</g:each>
-				</ul>
-			</div>
-		</div>
+		<div id="content">
+      <table>
+        <tr>
+          <td>Origen</td>
+          <td><input type="text" class="campoTexto" name="origen" id="origen" maxlenght="4"></td>
+          <td>Destino</td>
+          <td><input type="text" class="campoTexto" name="destino" id="destino" maxlenght="4"></td>
+          <td>Algoritmo</td>
+          <td>
+            <select name="algoritmo" id="algoritmo">
+              <option value="-1" selected> -- Selecciona -- </option>
+              <option value="1" > B&uacute;squeda por Amplitud </option>
+              <option value="2" > B&uacute;squeda por Profundidad </option>
+              <option value="3" > A estrella </option>
+              <option value="4" > Propuesto (Dijkstra) </option>
+            </select></td>
+          <td><input type="button" id="obtenerSolucion" value="Buscar Solucion"></td>
+        </tr>
+      </table>
+  </div>
+          <div style="border:thin black;">
+            <canvas id="viewport" width="1280" height="800"></canvas>
+          </div>
+  
+  <script type="text/javascript">
+      var sys = arbor.ParticleSystem(10,600,0.1,true,55,0.02,0.3);
+      sys.renderer = Renderer("#viewport");
+      var urls = new Array("-1","busquedaPorAmplitud","busquedaPorProfundidad","AEstrella","Dijkstra")
+      var ruta;
+      var arregloNodos =  new Array();
+      function clearCanvas(){
+        for(var i=0;i<arregloNodos.length;i++){
+            sys.pruneNode(arregloNodos[i]);
+        }
+        arregloNodos =  new Array();
+      }
+      /*
+      $(document).on("keyup",".campoTexto",function(){
+        if($(this).val().length<4){
+          alert("Deben ser palabras de 4 letras!!");
+        }
+      });*/
+      $(document).on("click","#obtenerSolucion",function(){
+          if($("#algoritmo :selected").val()<0){
+            alert("Elige un algoritmo!!!");
+            return;
+          }
+          $.ajax({
+            type: "POST",
+            contenType:"JSON",
+            url: "http://localhost:8080/proyectoFinal/busquedas/"+urls[$("#algoritmo :selected").val()]+"/",
+            data: { inicio: $("#origen").val(), destino: $("#destino").val() }
+          }).done(function( msg ) {
+            clearCanvas();
+            ruta = msg.ruta;
+            for(var i=0;i<ruta.length;i++){
+              if(i==0){
+                arregloNodos[i]=sys.addNode(ruta[i],{'color':'red','label':ruta[i]})
+              } else if(i==(ruta.length-1)){
+                arregloNodos[i]=sys.addNode(ruta[i],{'color':'red','label':ruta[i]})
+              } else {
+                arregloNodos[i]=sys.addNode(ruta[i],{'color':'blue','label':ruta[i]})
+              }
+              
+            }
+            for(var i=0;i<(ruta.length-1);i++){
+              sys.addEdge(arregloNodos[i],arregloNodos[i+1]);
+            }
+          });
+      });     
+  </script>
 	</body>
 </html>
