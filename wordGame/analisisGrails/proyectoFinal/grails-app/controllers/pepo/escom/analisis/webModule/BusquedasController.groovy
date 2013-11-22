@@ -7,7 +7,7 @@ import pepo.escom.analisis.domain.*
 
 class BusquedasController {
 
-    def index() {
+    def cargaGrafo() {
         Grafo g = new Grafo("Test")
         for(elemento in FourLetterWord.list()){
             String variable = elemento.word
@@ -25,13 +25,20 @@ class BusquedasController {
             }
         }
         session.grafo = g
-        render("Grafo cargado en memoria!!!!!")
+        //render([g:g.obtenerNodo("case"),mensaje:"OK"] as JSON)
     }
     def busquedaPorAmplitud(){
-        println(params)
-        session.grafo.busquedaAmplitud(params.inicio)
-        def ruta = session.grafo.ruta(params.destino,null)
-        render([ruta:ruta] as JSON)
+        if(!session?.grafo){
+            println("No existe el grafo!!")
+            cargaGrafo()
+        }
+        if(params?.inicio!="" && params?.destino!=""){
+            session.grafo.busquedaAmplitud(params?.inicio)
+            def ruta = session.grafo.ruta(params.destino,null)
+            render([ruta:ruta,error:false] as JSON)
+        } else {
+            render([ruta:[],error:true])
+        }
     }
     def cargaRegistros(){
         def dictionary1 = new File(servletContext.getRealPath('archivos/englishWords.txt'))
@@ -70,10 +77,12 @@ class BusquedasController {
         render("OK")
     }
     def busquedaPorProfundidad(){
-        println(params)
+        if(!session?.grafo){
+            println("No existe el grafo!!")
+            cargaGrafo()
+        }
         session.grafo.busquedaProfunidad(params.inicio)
         def ruta = session.grafo.ruta(params.destino,null)
-        println(ruta.size())
         render([ruta:ruta] as JSON)
     }
     def busquedaAEstrella(){
