@@ -22,5 +22,8 @@ class Utils {
     public static Integer INFINITO(){
         return -1;
     }
+    public static Integer INFINITO_DIJKSTRA(){
+        return Integer.MAX_VALUE;
+    }
 }
 

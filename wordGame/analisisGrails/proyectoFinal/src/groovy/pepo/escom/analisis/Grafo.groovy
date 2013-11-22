@@ -107,5 +107,42 @@ class Grafo {
         }
         return lista
     }
+    def busquedaDijkstra(String inicial,String destino){
+        def q = [] as Queue
+        def alt;
+        def dist = [:]
+        def visited = [:]
+        def previous = [:]
+        for(nodo in this.obtenerNombresNodos()){
+            dist[nodo] = Utils.INFINITO_DIJKSTRA()
+            visited[nodo] = false
+            previous[nodo] = null;
+        }
+        Nodo nodoInicial = this.nodos[inicial];        
+        q.offer(nodoInicial);
+        while(q.size()>0){
+            Nodo u = q.poll()            
+            if(u.nombre == destino){
+                break;
+            }
+            visited[u.nombre] = true;
+            for(vecino in u.obtenerVecinos()){
+                def nodoVecino = this.nodos[vecino]
+                alt = dist[u.nombre] + 1;
+                if(alt < dist[vecino] && !visited[vecino] ){
+                    dist[vecino] = alt;
+                    previous[vecino] = u.nombre;
+                    q.offer(nodoVecino)
+                }
+            }
+        }        
+        def listaFinal = []
+        def u = destino
+        while(previous[u]){            
+            listaFinal.add(u)
+            u = previous[u]
+        }
+        return listaFinal;
+    }
 }
 
