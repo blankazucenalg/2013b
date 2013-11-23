@@ -58,6 +58,7 @@ grails.project.dependency.resolution = {
 
         // plugins for the compile step
         compile ":scaffolding:2.0.1"
+        compile ":grails-melody:1.47.2"
         //compile ':cache:1.1.1'
 
         // plugins needed at runtime but not for compilation

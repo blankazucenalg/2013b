@@ -27,6 +27,7 @@ class BusquedasController {
         session.grafo = g
         //render([g:g.obtenerNodo("case"),mensaje:"OK"] as JSON)
     }
+    @net.bull.javamelody.MonitoredWithSpring
     def busquedaPorAmplitud(){
         if(!session?.grafo){
             println("No existe el grafo!!")
