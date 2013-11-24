@@ -108,7 +108,7 @@ display: none;
     <script type="text/javascript">
         var sys = arbor.ParticleSystem(10,600,0.1,true,55,0.02,0.3);
         sys.renderer = Renderer("#viewport");
-        var urls = new Array("-1","busquedaPorAmplitud","busquedaPorProfundidad","AEstrella","Dijkstra")
+        var urls = new Array("-1","busquedaPorAmplitud","busquedaPorProfundidad","busquedaAEstrella","busquedaDijkstra")
         var ruta;
         var arregloNodos =  new Array();
         function clearCanvas(){

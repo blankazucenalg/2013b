@@ -29,6 +29,7 @@ class BusquedasController {
     }
     @net.bull.javamelody.MonitoredWithSpring
     def busquedaPorAmplitud(){
+        println("Amplitud")
         if(!session?.grafo){
             println("No existe el grafo!!")
             cargaGrafo()
@@ -38,7 +39,7 @@ class BusquedasController {
             def ruta = session.grafo.ruta(params.destino,null)
             render([ruta:ruta,error:false] as JSON)
         } else {
-            render([ruta:[],error:true])
+            render([ruta:[],error:true] as JSON)
         }
     }
     def cargaRegistros(){
@@ -77,7 +78,9 @@ class BusquedasController {
         }*/
         render("OK")
     }
+    @net.bull.javamelody.MonitoredWithSpring
     def busquedaPorProfundidad(){
+        println("Profundidad")
         if(!session?.grafo){
             println("No existe el grafo!!")
             cargaGrafo()
@@ -86,10 +89,32 @@ class BusquedasController {
         def ruta = session.grafo.ruta(params.destino,null)
         render([ruta:ruta] as JSON)
     }
+    @net.bull.javamelody.MonitoredWithSpring
     def busquedaAEstrella(){
-        render([mensaje:"ok"] as JSON)
+        println("Estrella")
+        if(!session?.grafo){
+            println("No existe el grafo!!")
+            cargaGrafo()
+        }
+        if(params?.inicio!="" && params?.destino!=""){
+            def ruta = session.grafo.AStarSearch(params?.inicio,params?.destino)
+            render([ruta:ruta,error:false] as JSON)
+        } else {
+            render([ruta:[],error:true] as JSON)
+        }
     }
-    def otraBusqueda(){
-        render([mensaje:"ok"] as JSON)
+    @net.bull.javamelody.MonitoredWithSpring
+    def busquedaDijkstra(){
+        println("Dijkstra")
+        if(!session?.grafo){
+            println("No existe el grafo!!")
+            cargaGrafo()
+        }
+        if(params?.inicio!="" && params?.destino!=""){
+            def ruta = session.grafo.busquedaDijkstra(params?.inicio,params?.destino)
+            render([ruta:ruta,error:false] as JSON)
+        } else {
+            render([ruta:[],error:true] as JSON)
+        }
     }
 }

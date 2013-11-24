@@ -32,6 +32,7 @@ class Grafo {
     Nodo obtenerNodo(String nombreNodo){
         return this.nodos[nombreNodo]
     }
+    
     def busquedaProfunidad(String nombreNodoOrigen){
         Nodo n
         for( nn in obtenerNombresNodos()){
@@ -142,7 +143,61 @@ class Grafo {
             listaFinal.add(u)
             u = previous[u]
         }
+        listaFinal.add(inicial)
+        println(listaFinal)
         return listaFinal;
+    }
+    def AStarSearch(String inicio, String fin){
+        def closedSet = [] as Queue
+        def openSet = [] as Queue
+        def came_from = [:]
+        def g_score = [:]
+        def f_score = [:]
+        g_score[inicio]=0
+        f_score[inicio]=g_score[inicio]+this.heuristic(0);
+        //Se añade el nodo inicial
+        Nodo nodoInicial = this.nodos[inicio];
+        openSet.offer(nodoInicial)
+        int contador=0;
+        while(openSet.size()>0){
+            Nodo current = openSet.poll()
+            if(current.nombre==fin){
+                break;                
+            }
+            closedSet.offer(current)
+            for(vecino in current.obtenerVecinos()){
+                Nodo vecinoNodo =  this.nodos[vecino];
+                contador++;
+                def tentative_g_score = g_score[current.nombre] + 1;
+                def tentative_f_score = tentative_g_score + heuristic(contador)
+                if(closedSet.contains(vecinoNodo) && tentative_f_score >= f_score[vecinoNodo.nombre]){
+                    continue;
+                }
+                if(!openSet.contains(vecinoNodo)||tentative_f_score < f_score[vecinoNodo.nombre] ){
+                    came_from[vecinoNodo.nombre] = current.nombre
+                    g_score[vecinoNodo.nombre] = tentative_g_score
+                    f_score[vecinoNodo.nombre] = tentative_f_score
+                    if(!openSet.contains(vecinoNodo)){
+                        openSet.offer(vecinoNodo)
+                    }
+                    
+                }
+            }
+        }
+        String listaFinal = ""
+        def u = fin
+        while(came_from[u]){            
+            listaFinal+=u+","
+            u = came_from[u]
+        }
+        listaFinal+=inicio;
+        println(listaFinal)
+        return listaFinal.split(",");
+    }
+    def heuristic(Integer visitados){
+        Integer valor = (Integer)((this.nodos.size()*2500 - visitados)/(this.nodos.size()*2500))
+        //print(visitados+":"+valor+",");
+        return valor;
     }
 }
 
