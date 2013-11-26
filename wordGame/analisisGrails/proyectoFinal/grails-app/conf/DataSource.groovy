@@ -38,7 +38,9 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            url = "jdbc:mysql://127.6.101.2:3306/jbossews"
+            username="adminCtiU3d2"
+            password="h-S6Z7vnskns"
             properties {
                 maxActive = -1
                 minEvictableIdleTimeMillis=1800000

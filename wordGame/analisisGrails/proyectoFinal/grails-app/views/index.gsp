@@ -81,32 +81,41 @@ display: none;
     </style>
   </head>
   <body>
-    <div id="content">
-      <table>
-        <tr>
-          <td>Origen</td>
-          <td><input type="text" class="campoTexto" name="origen" id="origen" maxlenght="4"></td>
-          <td>Destino</td>
-          <td><input type="text" class="campoTexto" name="destino" id="destino" maxlenght="4"></td>
-          <td>Algoritmo</td>
-          <td>
-            <select name="algoritmo" id="algoritmo">
-              <option value="-1" selected> -- Selecciona -- </option>
-              <option value="1" > B&uacute;squeda por Amplitud </option>
-              <option value="2" > B&uacute;squeda por Profundidad </option>
-              <option value="3" > A estrella </option>
-              <option value="4" > Propuesto (Dijkstra) </option>
-            </select></td>
-          <td><input type="button" id="obtenerSolucion" value="Buscar Solucion"></td>
-        </tr>
-      </table>
+    <hr>
+    <div class="container">
+      <div class="row row-offcanvas row-offcanvas-right">
+          <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+              <div class="well sidebar-nav">
+                  <ul class="nav">
+                      <li><b>Origen</b></li>
+                      <li><input type="text" class="campoTexto" name="origen" id="origen" maxlenght="4"></li>
+                      <li><b>Destino</b></li>
+                      <li><input type="text" class="campoTexto" name="destino" id="destino" maxlenght="4"></li>
+                      <li><b>Algoritmo</b></li>
+                      <li>
+                        <select name="algoritmo" id="algoritmo">
+                          <option value="-1" selected> -- Selecciona -- </option>
+                          <option value="1" > B&uacute;squeda por Amplitud </option>
+                          <option value="2" > B&uacute;squeda por Profundidad </option>
+                          <option value="3" > A estrella </option>
+                          <option value="4" > Propuesto (Dijkstra) </option>
+                        </select>
+                      </li>
+                      <li><input class="btn btn-lg btn-danger" type="button" id="obtenerSolucion" value="Buscar Solucion"></li>
+                  </ul>
+              </div><!--/.well -->
+          </div><!--/span-->
+          <div class="col-xs-12 col-sm-9 container">
+                  <div style="border:thin solid black; width:75%; clear:both; display:inline-block; height:75%; max-height:100%;">
+                      <div style="border:thin solid black; width:100%; height:100%;">
+                          <canvas id="viewport" width="100%" height="100%"></canvas>
+                      </div>
+                </div>                
+          </div><!--/row-->
+      </div><!--/span-->
     </div>
-    <div style="border:thin black;">
-      <canvas id="viewport" width="1280" height="800"></canvas>
-    </div>
-
     <script type="text/javascript">
-        var sys = arbor.ParticleSystem(10,600,0.1,true,55,0.02,0.3);
+        var sys = arbor.ParticleSystem(100,600,0.5,false,55,0.02,0.6);
         sys.renderer = Renderer("#viewport");
         var urls = new Array("-1","busquedaPorAmplitud","busquedaPorProfundidad","busquedaAEstrella","busquedaDijkstra")
         var ruta;
@@ -139,7 +148,7 @@ display: none;
             $.ajax({
               type: "POST",
               contenType:"JSON",
-              url: "http://localhost:8080/proyectoFinal/busquedas/"+urls[$("#algoritmo :selected").val()]+"/",
+              url: "busquedas/"+urls[$("#algoritmo :selected").val()]+"/",
               data: { inicio: $("#origen").val(), destino: $("#destino").val() }
             }).done(function( msg ) {
               console.log("Datos recibidos! " + msg.ruta);

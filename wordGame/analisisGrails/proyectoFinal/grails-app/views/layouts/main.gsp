@@ -9,7 +9,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title><g:layoutTitle default="Grails"/></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>              
+                <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
+                <script src="${resource(dir: 'js', file: 'jquery-1.8.3.js')}"></script>
+                <script src="${resource(dir: 'js', file: 'bootstrap.js')}"></script>              
                 <script src="${resource(dir: 'js', file: 'arbor.js')}"></script>
                 <script src="${resource(dir: 'js', file: 'graphics.js')}"></script>
                 <script src="${resource(dir: 'js', file: 'renderer.js')}"></script>
@@ -17,18 +19,22 @@
 		<r:layoutResources />
 	</head>
 	<body>
-                <table>
-                  <tr>
-                    <td><b>Integrantes</b></td>
-                    <td>L&oacute;pez Gardu&ntilde;o Blanca Azucena</td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td>Res&eacute;ndiz Arteaga Juan Alberto</td>
-                  </tr>
-                </table>
-		<g:layoutBody/>
-		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-		<r:layoutResources />
+            <div class="navbar navbar-inverse navbar-fixed-top">
+              <div class="container">
+                  <div class="navbar-header">
+                      <a class="navbar-brand" href="${createLink(uri: '/')}">Buscador de palabras</a>
+                  </div>
+                  <div class="collapse navbar-collapse">
+                      <ul class="nav navbar-nav">
+                          <li class="active"><a class="home" href="#">Integrantes</a></li>
+                          <li><a href="#about">Res&eacute;ndiz Arteaga Juan Alberto</a></li>
+                          <li><a href="#contact">L&oacute;pez Gardu&ntilde;o Blanca Azucena</a></li>
+                      </ul>
+                  </div><!--/.nav-collapse -->
+              </div>
+          </div>
+          <div class="container">
+              <g:layoutBody/>
+          </div>              
 	</body>
 </html>
