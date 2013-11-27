@@ -10,8 +10,10 @@
 		<title><g:layoutTitle default="Grails"/></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
+                <link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery-ui-1.10.3.custom.min.css')}" type="text/css">
                 <script src="${resource(dir: 'js', file: 'jquery-1.8.3.js')}"></script>
-                <script src="${resource(dir: 'js', file: 'bootstrap.js')}"></script>              
+                <script src="${resource(dir: 'js', file: 'jquery-ui-1.10.3.custom.min.js')}"></script>
+                
                 <script src="${resource(dir: 'js', file: 'arbor.js')}"></script>
                 <script src="${resource(dir: 'js', file: 'graphics.js')}"></script>
                 <script src="${resource(dir: 'js', file: 'renderer.js')}"></script>

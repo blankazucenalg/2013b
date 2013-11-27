@@ -6,7 +6,20 @@ import pepo.escom.analisis.Utils
 import pepo.escom.analisis.domain.*
 
 class BusquedasController {
-
+    def obtenerPalabrasAutoComplete(){
+        println("${params?.like}%")
+        render([lista:FourLetterWord.findAllByWordLike("${params?.like}%")] as JSON)
+    }
+    def respuestaCargaGrafo(){
+        if(!session?.grafo){
+            println("No existe el grafo!!")
+            cargaGrafo()
+            render("Cargado!")
+            return;
+        } else {
+            render("Ya existe");
+        }
+    }
     def cargaGrafo() {
         Grafo g = new Grafo("Test")
         for(elemento in FourLetterWord.list()){
